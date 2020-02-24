@@ -4,19 +4,20 @@ const auth = require('../auth');
 const Account = mongoose.model('Account');
 const User = mongoose.model('User');
 
-router.param('account', (req, res, next, number) => {
-  Account.findOne({ number })
-    .then((account) => {
-      if (!account) { return res.sendStatus(404); }
-      req.account = account;
-      return next();
-    }).catch(next);
-});
+// router.param('account', (req, res, next, number) => {
+//   Account.findOne({ number })
+//     .then((account) => {
+//       if (!account) { return res.sendStatus(404); }
+//       req.account = account;
+//       return next();
+//     }).catch(next);
+// });
 
-router.get('/', auth.required, (req, res, next) => {
-    Account.find({user:req.payload.id})
+//router.get('/', auth.required, (req, res, next) => {
+router.get('/', (req, res, next) => {
+  Account.find({})
     .then((accounts) => {
-      if(!account) { return res.sendStatus(404);}
+      if(!accounts) { return res.sendStatus(404);}
       return res.json({accounts});
     }).catch(next);
 });

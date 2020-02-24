@@ -23,17 +23,18 @@ const Movement = mongoose.model('Movimientos');
     //return res.json({movement: movements.toAuthJSON()});
   }).catch(next);
 }); */
-
-router.get('/', auth.required, (req, res, next) => {
+router.get('/', (req, res, next) => {
+//router.get('/', auth.required, (req, res, next) => {
   let movementsList = [];
-  Movement.find({movements:req.body.id}, function(err, movements){
-  //Movement.find({movements:req.body.id}).then(function(movement){
+  //Movement.find({}, function(err, movements){
+  
+  Movement.find({}, function(err, movements){
     if(!movements) { return res.sendStatus(404); }
     if (err){
       next(err);
     } else {
       for (let movement of movements) {
-        movementsList.push({id: movement._id, name: movement.name, release: movement.release, amount: movement.amount});
+        movementsList.push({id: movement._id, name: movement.name, detail:movement.detail, release: movement.release, amount: movement.amount, account: movement.account, email: movement.email});
     }
     //return res.json({
       return res.json({status:"success", message: "movements list found!!!", data:{movements: movementsList}});
@@ -44,12 +45,16 @@ router.get('/', auth.required, (req, res, next) => {
 
 
 router.post('/', function(req, res, next){
+
     let movement = new Movement();
 
     movement.amount = req.body.movement.amount;
     movement.name = req.body.movement.name;
     movement.release = req.body.movement.release;
-    
+    movement.account = req.body.movement.account;
+    movement.detail = req.body.movement.detail;
+    movement.email = req.body.movement.email;
+
     movement.save().then(function(){
       return res.json({movement});
     }).catch(next);

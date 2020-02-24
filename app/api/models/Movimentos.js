@@ -6,10 +6,15 @@ const MovimientosSchema = new Schema({
         type: String,
         required: [true, 'La cuenta es necesaria']
     },
-    name: {
+    detail: {
         type: String,
         trim: true,  
         required: [true, 'El detalle es requerido']
+    },
+    name: {
+        type: String,
+        trim: true,  
+        required: [true, 'El Nombre es requerido']
     },
     amount: {
         type: Number,
@@ -17,11 +22,17 @@ const MovimientosSchema = new Schema({
         required: [true, 'El monto es requerido']
     },
     release: {
-        type: Date,
+        type: String,
         trim: true,
         required: [true, 'La fecha es necesaria']
+    },
+    email:{
+        //email de origen
+        type: String,
+        trim: true,
+        required: [true, 'Origen necesario']
     }
-}, {timestamps: true})
+})
 ;
 module.exports = mongoose.model('Movimientos', MovimientosSchema)
 

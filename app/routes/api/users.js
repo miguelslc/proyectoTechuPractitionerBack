@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const passport = require('passport');
 const User = mongoose.model('User');
+const Account = mongoose.model('Account');
+
 const auth = require('../auth');
 
 router.get('/', (req, res, next) => {
@@ -63,6 +65,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/register', (req, res, next) => {
+
     let user = new User();
     if(!req.body.user.name){
       return res.status(422).json({errors: {name: "Por favor, ingrese Nombre"}});

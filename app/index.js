@@ -1,5 +1,5 @@
 require('./config/cfg');
-require('./config/database');
+require('dotenv').config()
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -7,6 +7,7 @@ const path = require('path');
 const cors = require('cors');
 const errorhandler = require('errorhandler');
 const logger = require('morgan');
+
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -26,29 +27,26 @@ if (!isProduction) {
     app.use(errorhandler());
 }
 
-// connection to mongodb
-//mongoose.connection.on('error', 
-
-//console.error.bind(console, 'MongoDB connection error:')
-//);
-
 app.use(logger('dev'));
-//mongoose.connect(process.env.URLDB,
-//    {
-//        useNewUrlParser: true,
-//        useUnifiedTopology: true
-//    },
-//    (err, res) => {
+
+mongoose.connect(process.env.URLDB,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+    },
+    (err, res) => {
     
-//    if (err) throw err;
-//    console.log('MongoDB is ONLINE');
-//});
+    if (err) throw err;
+    console.log('MongoDB is ONLINE');
+});
 
 require('./api/models/Users');
 require('./api/models/Movimentos');
 require('./api/models/Account');
 require('./config/passport');
-require('./api/weather');
+
+
 // Configuración global de rutas
 app.use(require('./routes/'));
 
@@ -84,8 +82,6 @@ if (!isProduction) {
         }});
     });
 }
-
-
 
 // finally, let's start our server...
 var server = app.listen( process.env.PORT || 3000, function(){

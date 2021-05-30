@@ -1,4 +1,5 @@
-require('./config/cfg');
+//require('./config/cfg');
+require('./config/database');
 require('dotenv').config()
 
 const express = require('express');
@@ -17,6 +18,7 @@ const app = express();
 app.use(cors());
 
 const bodyParser = require('body-parser');
+const { static } = require('express');
 
 // Normal express config defaults
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -75,6 +77,7 @@ if (!isProduction) {
 }else {
     // production error handler
     // no stacktraces leaked to user
+    app.use ('/', express.static(`${__dirname}/`))
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.json({'errors': {
@@ -85,6 +88,6 @@ if (!isProduction) {
 }
 
 // finally, let's start our server...
-var server = app.listen( process.env.PORT || 3000, function(){
+var server = app.listen( process.env.PORT || 5000, function(){
     console.log('Server is listening on port ' + server.address().port);
 });

@@ -23,8 +23,8 @@ const Movement = mongoose.model('Movimientos');
     //return res.json({movement: movements.toAuthJSON()});
   }).catch(next);
 }); */
-router.get('/', (req, res, next) => {
-//router.get('/', auth.required, (req, res, next) => {
+//router.get('/', (req, res, next) => {
+router.get('/', auth.optional, (req, res, next) => {
   let movementsList = [];
   //Movement.find({}, function(err, movements){
   
@@ -34,10 +34,18 @@ router.get('/', (req, res, next) => {
       next(err);
     } else {
       for (let movement of movements) {
-        movementsList.push({id: movement._id, name: movement.name, detail:movement.detail, release: movement.release, amount: movement.amount, account: movement.account, email: movement.email});
+        movementsList.push({
+          id: movement._id, 
+          name: movement.name, 
+          detail:movement.detail, 
+          release: movement.release, 
+          amount: movement.amount, 
+          account: movement.account, 
+          email: movement.email
+        });
     }
     //return res.json({
-      return res.json({status:"success", message: "movements list found!!!", data:{movements: movementsList}});
+      return res.json({movementsList});
     };
     //return res.json({movement: movements.toAuthJSON()});
   }).catch(next);

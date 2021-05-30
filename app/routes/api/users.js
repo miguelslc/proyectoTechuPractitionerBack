@@ -6,7 +6,7 @@ const Account = mongoose.model('Account');
 
 const auth = require('../auth');
 
-router.get('/', (req, res, next) => {
+router.get('/register', (req, res, next) => {
   User.find().then((user) => {
     if(!user){ return res.sendStatus(401); }
 
@@ -14,13 +14,13 @@ router.get('/', (req, res, next) => {
   }).catch(next);
 });
 
-/* router.get('/', auth.required, (req, res, next) => {
+router.get('/register/:id', auth.required, (req, res, next) => {
     User.findById(req.payload.id).then((user) => {
       if(!user){ return res.sendStatus(401); }
   
       return res.json({user: user.toAuthJSON()});
     }).catch(next);
-}); */
+});
 
 router.put('/', auth.required, (req, res, next) => {
     User.findById(req.payload.id).then((user) => {
